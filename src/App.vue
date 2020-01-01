@@ -5,9 +5,20 @@
 </template>
 
 <script>
+import jsonp from 'jsonp'
 export default {
-  name: 'app'
+  name: 'app',
+  component:{
+
+  },
+  data(){
+    return {}
+  },
+  mounted(){
+
+  }
 }
+
 </script>
 
 <style lang="scss">
