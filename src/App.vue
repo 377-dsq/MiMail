@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import storage from './storage/index'
 export default {
   name: 'app',
   component:{
@@ -14,7 +15,10 @@ export default {
     return {}
   },
   mounted(){
-
+    storage.setItem('a',1);
+    //storage.setItem('user',{a:1});
+    storage.setItem('abc',{a:1},'user');
+    storage.clear('abc','user');
   }
 }
 
