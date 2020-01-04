@@ -6,7 +6,16 @@
             <ul class="menu-wrap">
               <li class="menu-item">
                 <a href="javascript:;">手机 电话卡</a>
-                <div class="children"></div>
+                <div class="children">
+                  <ul v-for="(item,index) in menuList" :key="index">
+                    <li v-for="(sub,index) in item" :key="index">
+                      <a :href="sub?'/#/product/'+sub.id:''">
+                        <img :src="sub?sub.img:'imgs/item-box-1.png'" alt="">
+                        {{sub?sub.name:'小米9'}}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </li>
               <li class="menu-item">
                 <a href="javascript:;">电视 盒子</a>
@@ -65,17 +74,26 @@
             <div class="swiper-button-next" slot="button-next"></div>
           </swiper>
         </div>
-        <div class="ads-box"></div>
-        <div class="banner"></div>
-        <div class="product-box"></div>
+        <div class="ads-box">
+          <a :href="'/#/product/'+item.id" v-for="(item,index) in adsList" :key="index">
+            <img :src="item.img" alt="">
+          </a>
+        </div>
+        <div class="banner">
+          <a href="/#/product/30"><img src="/imgs/banner-1.png" alt=""></a>
+        </div>
+        <div class="product-box">
+          <div class="title">手机</div>
+          
+        </div>
       </div>
     <service-bar></service-bar>
     </div>
 </template>
 <script>
-import serviceBar from './../components/serviceBar'
-import {swiper,swiperSlide} from 'vue-awesome-swiper'
-import 'swiper/dist/css/swiper.css'
+  import serviceBar from './../components/serviceBar'
+  import {swiper,swiperSlide} from 'vue-awesome-swiper'
+  import 'swiper/dist/css/swiper.css'
     export default{
       name:'index',
       components:{
@@ -200,6 +218,23 @@ import 'swiper/dist/css/swiper.css'
                 name:'移动4G专区'
               }
             ],[0,0,0,0],[0,0,0,0]
+          ],
+          adsList:[
+            {
+              id:33,
+              img:'/imgs/ads/ads-1.png',
+            },
+            {
+              id:48,
+              img:'/imgs/ads/ads-2.jpg',
+            },
+            {
+              id:45,
+              img:'/imgs/ads/ads-3.png',
+            },{
+              id:47,
+              img:'/imgs/ads/ads-4.jpg',
+            }
           ]
         }
       }
@@ -284,6 +319,30 @@ import 'swiper/dist/css/swiper.css'
         .swiper-button-prev{
           left: 274px;
         }
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    .ads-box{
+      @include flex();
+      margin-top: 14px;
+      margin-bottom: 31px;
+      a{
+        width: 296px;
+        height: 167px;
+        display:inline-block;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    .banner{
+      margin-bottom: 50px;
+      a{
+        display: block;
         img{
           width: 100%;
           height: 100%;
