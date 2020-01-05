@@ -82,9 +82,33 @@
         <div class="banner">
           <a href="/#/product/30"><img src="/imgs/banner-1.png" alt=""></a>
         </div>
-        <div class="product-box">
+      </div>
+      <div class="product-box">
+        <div class="container">
           <div class="title">手机</div>
-          
+          <div class="wrapper">
+            <div class="banner-left">
+              <a href="/#/product/35">
+                <img src="/imgs/mix-alpha.jpg" alt="">
+              </a>
+            </div>
+            <div class="list-box">
+              <div class="list" v-for="(item,index) in phoneList" :key="index">
+                <div class="item" v-for="(sub,i) in item" :key="i">
+                  <span :class="{'tag new-pro':i%2==0}">{{i%2==0?'新品':''}}</span>
+                  <span :class="{'tag kill-pro':i%2==1}">{{i%2==1?'秒杀':''}}</span>
+                  <div class="item-img">
+                    <img :src="sub.mainImage" alt="">
+                  </div>
+                  <div class="item-info">
+                    <h3>{{sub.name}}</h3>
+                    <p>{{sub.subtitle}}</p>
+                    <p class="price">{{sub.price|currency}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     <service-bar></service-bar>
@@ -235,13 +259,38 @@
               id:47,
               img:'/imgs/ads/ads-4.jpg',
             }
-          ]
+          ],
+          phoneList:[]
+        }
+      },
+      filters:{
+        currency(val){
+          if(!val) return 0.00;
+          return '￥'+val.toFixed(2)+'元';
+        }
+      },
+      mounted(){
+        this.init();
+      },
+      methods:{
+        init(){
+          this.axios.get('/products',{
+            params:{
+              categoryId:100012,
+              pageSize:14
+            }
+          }).then((res)=>{
+            res.list=res.list.slice(6,14);
+            this.phoneList=[res.list.slice(0,4),res.list.slice(4,8)]
+          })
         }
       }
     }
 </script>
 <style lang="scss">
 @import './../assets/scss/mixin.scss';
+@import './../assets/scss/config.scss';
+@import './../assets/scss/base.scss';
 .index{
   .container{
     display: block;
@@ -346,6 +395,92 @@
         img{
           width: 100%;
           height: 100%;
+        }
+      }
+    }
+  }
+  .product-box{
+    background: $colorJ;
+    padding-top: 30px;
+    padding-bottom: 50px;
+    .title{
+      font-size: $fontF;
+      height: 21px;
+      line-height: 21px;
+      color: $colorB;
+      font-weight: bolder;
+      margin-bottom: 20px;
+    }
+    .wrapper{
+      display: flex;
+      .banner-left{
+        margin-right: 16px;
+        img{
+          width: 224px;
+          height: 619px;
+        }
+      }
+      .list-box{
+        .list{
+          @include flex();
+          margin-bottom: 14px;
+          width: 986px;
+          &:last-child{
+            margin-bottom: 0;
+          }
+          .item{
+            width: 236px;
+            height: 302px;
+            background: $colorG;
+            text-align: center;
+            .tag{
+              display: inline-block;
+              color: #fff;
+              width: 67px;
+              height: 24px;
+              font-size: 14px;
+              line-height: 24px;
+              &.new-pro{
+                background: #7ecf68;
+              }
+              &.kill-pro{
+                background: #e82626;
+              }
+            }
+            .item-img{
+              height: 195px;
+              img{
+                height: 195px;
+                width: 100%;
+              }
+            }
+            .item-info{
+              h3{
+                color: $colorB;
+                line-height: $fontJ;
+                font-size: $fontJ;
+                font-weight: bold;
+              }
+              p{
+                color: $colorD;
+                line-height: 13px;
+                margin: 6px auto 13px;
+                font-size: $fontK;
+              }
+              .price{
+                color: #f20a0a;
+                font-size: $fontJ;
+                font-weight: bold;
+                &:after{
+                  content: '';
+                  margin-left: 5px;
+                  vertical-align: middle;
+                  @include bgImg(22px,22px,'/imgs/icon-cart-hover.png');
+                  cursor: pointer;
+                }
+              }
+            }
+          }
         }
       }
     }
