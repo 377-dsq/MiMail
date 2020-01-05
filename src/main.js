@@ -3,6 +3,7 @@ import router from './router' //./表示当前目录，没有./则表明是插�
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import App from './App.vue'
+import VueLazyLoad from 'vue-lazyload'
 //import env from './env'
 
 const mock =false;   //mock开关
@@ -29,6 +30,9 @@ axios.interceptors.response.use(function(response){
 });
 
 Vue.use(VueAxios,axios);
+Vue.use(VueLazyLoad,{
+  loading:'/imgs/loading-svg/loading-bars.svg'
+})
 Vue.config.productionTip=false  //生产环境的提示，
 
 new Vue({

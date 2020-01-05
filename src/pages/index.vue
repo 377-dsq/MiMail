@@ -76,11 +76,11 @@
         </div>
         <div class="ads-box">
           <a :href="'/#/product/'+item.id" v-for="(item,index) in adsList" :key="index">
-            <img :src="item.img" alt="">
+            <img v-lazy="item.img" alt="">
           </a>
         </div>
         <div class="banner">
-          <a href="/#/product/30"><img src="/imgs/banner-1.png" alt=""></a>
+          <a href="/#/product/30"><img v-lazy="'/imgs/banner-1.png'" alt=""></a>
         </div>
       </div>
       <div class="product-box">
@@ -89,7 +89,7 @@
           <div class="wrapper">
             <div class="banner-left">
               <a href="/#/product/35">
-                <img src="/imgs/mix-alpha.jpg" alt="">
+                <img v-lazy="'/imgs/mix-alpha.jpg'" alt="">
               </a>
             </div>
             <div class="list-box">
@@ -98,12 +98,12 @@
                   <span :class="{'tag new-pro':i%2==0}">{{i%2==0?'新品':''}}</span>
                   <span :class="{'tag kill-pro':i%2==1}">{{i%2==1?'秒杀':''}}</span>
                   <div class="item-img">
-                    <img :src="sub.mainImage" alt="">
+                    <img v-lazy="sub.mainImage" alt="">
                   </div>
                   <div class="item-info">
                     <h3>{{sub.name}}</h3>
                     <p>{{sub.subtitle}}</p>
-                    <p class="price">{{sub.price|currency}}</p>
+                    <p class="price" @click="addCart(item.id)">{{sub.price|currency}}</p>
                   </div>
                 </div>
               </div>
@@ -112,18 +112,23 @@
         </div>
       </div>
     <service-bar></service-bar>
+    <modal title="提示" confirmText="查看购物车" btnType=1 modal='middel' v-bind:showModal="showModal" v-on:submit="gotoCart" v-on:cancel="showModal=false">
+      <template v-slot:body>商品添加成功！</template>
+    </modal>
     </div>
 </template>
 <script>
   import serviceBar from './../components/serviceBar'
   import {swiper,swiperSlide} from 'vue-awesome-swiper'
+  import modal from './../components/modal'
   import 'swiper/dist/css/swiper.css'
     export default{
       name:'index',
       components:{
         swiper,
         swiperSlide,
-        serviceBar
+        serviceBar,
+        modal
       },
       data(){
         return {
@@ -260,7 +265,8 @@
               img:'/imgs/ads/ads-4.jpg',
             }
           ],
-          phoneList:[]
+          phoneList:[],
+          showModal:false
         }
       },
       filters:{
@@ -283,6 +289,21 @@
             res.list=res.list.slice(6,14);
             this.phoneList=[res.list.slice(0,4),res.list.slice(4,8)]
           })
+        },
+        addCart(){
+          this.showModal=true;
+          return;
+          // this.axios.post('/carts',{
+          //   productId:id,
+          //   selected:true
+          // }).then(()=>{
+
+          // }).catch(()=>{
+          //   this.showModal=true;
+          // })
+        },
+        gotoCart(){
+          this.$router.push('/cart')
         }
       }
     }
