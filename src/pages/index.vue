@@ -66,7 +66,7 @@
           </div>
           <swiper v-bind:options="swiperOption">
             <swiper-slide v-for="(item,index) in slideList" :key="index">  <!--key是必须的-->
-            <a v-bind:href="'/#/product'+item.id"><img v-bind:src="item.img" alt=""></a>
+            <a v-bind:href="'/#/product/'+item.id"><img v-bind:src="item.img" alt=""></a>
             </swiper-slide>
             <!-- optional control -->
             <div class="swiper-pagination" slot="pagination"></div>

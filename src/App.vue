@@ -17,6 +17,8 @@ export default {
     }
   },
   mounted(){
+    this.getUser();
+    this.getCartCount();
     //本地加载请求静态json文件的形式
     //this.axios.get('/mock/user/login.json').then((res)=>{
     // this.res=res;
@@ -25,6 +27,18 @@ export default {
     //this.axios.get('/user/login').then((res)=>{
     //  this.res=res;
    // });
+  },
+  methods:{
+    getUser(){
+      this.axios.get('/user').then((res)=>{
+        this.$store.dispatch('saveUserName',res.username)
+      })
+    },
+    getCartCount(){
+      this.axios.get('/carts/products/sum').then((res)=>{
+        this.$store.dispatch('saveCartCount',res)
+      })
+    }
   }
 }
 

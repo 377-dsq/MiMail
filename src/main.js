@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import router from './router' //./表示当前目录，没有./则表明是插件
 import axios from 'axios'
+import store from './store' //index.js可省略掉，自动读取store下的index.js
 import VueAxios from 'vue-axios'
 import App from './App.vue'
 import VueLazyLoad from 'vue-lazyload'
+import VueCookie from 'vue-cookie'
 //import env from './env'
 
 const mock =false;   //mock开关
@@ -20,22 +22,26 @@ axios.defaults.timeout=8000;  //超时设置
 //接口错误拦截
 axios.interceptors.response.use(function(response){
   let res=response.data; //接口返回的值,是个对象
+  let path=location.path;
   if(res.status==0){
     return res.data;
   }else if(res.status==10){
-    window.location.href='/#/login';
+    if(path!=='#/index') window.location.href='/#/login';
   }else{
     alert(res.msg);
+    return Promise.reject(res);
   }
 });
 
 Vue.use(VueAxios,axios);
 Vue.use(VueLazyLoad,{
   loading:'/imgs/loading-svg/loading-bars.svg'
-})
+});
+Vue.use(VueCookie)
 Vue.config.productionTip=false  //生产环境的提示，
 
 new Vue({
   router,
+  store,
   render: h=>h(App),
 }).$mount('#app')
