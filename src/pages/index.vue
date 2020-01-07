@@ -157,19 +157,19 @@
               img:'/imgs/slider/slide-1.jpg'
             },
             {
-              id:'43',
+              id:'45',
               img:'/imgs/slider/slide-2.jpg'
             },
             {
-              id:'45',
+              id:'43',
               img:'/imgs/slider/slide-3.jpg'
             },
             {
-              id:'',
+              id:'42',
               img:'/imgs/slider/slide-4.jpg'
             },
             {
-              id:'',
+              id:'41',
               img:'/imgs/slider/slide-5.jpg'
             }
           ],
