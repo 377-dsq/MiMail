@@ -5,3 +5,18 @@
   margin-right:auto;
   margin-left:auto;
 }
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
+.clearfix{
+  &:before, &:after{
+    content:'';
+    display: table;
+  }
+  &:after{
+    clear:both;
+  }
+}

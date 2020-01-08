@@ -103,7 +103,7 @@
                   <div class="item-info">
                     <h3>{{sub.name}}</h3>
                     <p>{{sub.subtitle}}</p>
-                    <p class="price" @click="addCart(item.id)">{{sub.price|currency}}</p>
+                    <p class="price" @click="addCart(sub.id)">{{sub.price|currency}}</p>
                   </div>
                 </div>
               </div>
@@ -112,7 +112,7 @@
         </div>
       </div>
     <service-bar></service-bar>
-    <modal title="提示" confirmText="查看购物车" btnType=1 modal='middel' v-bind:showModal="showModal" v-on:submit="gotoCart" v-on:cancel="showModal=false">
+    <modal title="提示" confirmText="查看购物车" btnType=1 modal='middel' v-bind:showModal="showModal" v-on:submit="goToCart" v-on:cancel="showModal=false">
       <template v-slot:body>商品添加成功！</template>
     </modal>
     </div>
@@ -290,19 +290,18 @@
             this.phoneList=[res.list.slice(0,4),res.list.slice(4,8)]
           })
         },
-        addCart(){
-          this.showModal=true;
-          return;
-          // this.axios.post('/carts',{
-          //   productId:id,
-          //   selected:true
-          // }).then(()=>{
-
-          // }).catch(()=>{
-          //   this.showModal=true;
-          // })
+        addCart(id){
+          this.axios.post('/carts',{
+                productId:id,
+                selected: true
+            }).then((res)=>{
+             this.showModal=true;
+             this.$store.dispatch('saveCartCount',res.cartTotalQuantity);
+          }).catch(()=>{
+            this.showModal=true;
+          })
         },
-        gotoCart(){
+        goToCart(){
           this.$router.push('/cart')
         }
       }

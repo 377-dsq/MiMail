@@ -11,6 +11,7 @@ import OrderList from './pages/orderList'
 import OrderPay from './pages/orderPay'
 import Alipay from './pages/alipay'
 import Login from'./pages/login'
+import Test from'./pages/test'
 
 Vue.use(Router);
 
@@ -27,6 +28,11 @@ export default new Router({
                     name:'index',
                     component:Index,
                 },{
+                    path:'/test',
+                    name: 'test',
+                    component:Test,
+                },
+                {
                     path:'/product/:id',
                     name:'product',
                     component:Product,

@@ -7,7 +7,6 @@
             <a href="javascript:;">参数</a><span>|</span>
             <a href="javascript:;">用户评价</a>
             <slot name="buy"></slot>
-
         </div>
     </div>
 </div>
@@ -44,6 +43,7 @@ export default {
     border-top: 1px solid #e5e5e5;
     background-color: #fff;
     width: 100%;
+    z-index: 10;
     &.isFixed{
         position: fixed;
         top: 0px;
