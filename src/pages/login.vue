@@ -42,7 +42,6 @@
     </div>
 </template>
 <script>
-
 export default {
     name:'login',
     data(){
@@ -72,7 +71,7 @@ export default {
                 password:'123456',
                 email:'dusiqi@12.cn'
             }).then(()=>{
-                alert('注册成功');
+                this.$message.success('注册成功');
             })
         }
     }

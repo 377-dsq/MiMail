@@ -3,6 +3,8 @@ import router from './router' //./表示当前目录，没有./则表明是插�
 import axios from 'axios'
 import store from './store' //index.js可省略掉，自动读取store下的index.js
 import VueAxios from 'vue-axios'
+import {Message} from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 import App from './App.vue'
 import VueLazyLoad from 'vue-lazyload'
 import VueCookie from 'vue-cookie'
@@ -29,7 +31,7 @@ axios.interceptors.response.use(function(response){
     if(path!=='#/index') window.location.href='/#/login';
     return Promise.reject(res);
   }else{
-    alert(res.msg);
+    Message.warning(res.msg);
     return Promise.reject(res);
   }
 });
@@ -38,7 +40,9 @@ Vue.use(VueAxios,axios);
 Vue.use(VueLazyLoad,{
   loading:'/imgs/loading-svg/loading-bars.svg'
 });
+//Vue.use(Message);
 Vue.use(VueCookie)
+Vue.prototype.$message=Message;
 Vue.config.productionTip=false  //生产环境的提示，
 
 new Vue({
