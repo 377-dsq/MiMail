@@ -1,8 +1,8 @@
 <template>
     <div class="cart">
-        <order-header :title="'我的购物车'" :username="username">
+        <order-header :title="'我的购物车'">
             <template slot='tip'>
-                    <span>温馨提示：产品是否购买成功，以最终下单为准哦，请尽快结算</span>
+                <span>温馨提示：产品是否购买成功，以最终下单为准哦，请尽快结算</span>
             </template>
         </order-header>
         <div class="cart-body">
@@ -33,7 +33,6 @@
                     <div class="fr">
                         <span class="total-cost">合计：<span class="large-number">{{cartTotalPrice}}</span>元</span>
                     </div>
-                    
                 </div>
             </div>  
         </div>
@@ -59,11 +58,6 @@ export default {
             cartTotalPrice:0,
             cartTotalQuantity:0,
             selectedNumber:0
-        }
-    },
-    computed:{
-        username(){
-          return this.$store.state.username;
         }
     },
     mounted(){
@@ -131,7 +125,7 @@ export default {
                 this.$message.warning('至少选择一件商品');
                 return;
             }else{
-                this.$router.push('/orderConfirm');
+                this.$router.push('/order/confirm');
             }
         }
         

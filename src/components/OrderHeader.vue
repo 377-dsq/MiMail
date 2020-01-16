@@ -14,12 +14,18 @@
     </div>
 </template>
 <script>
+//import {mapState} from 'vuex'
     export default{
       name:'order-header',
       props:{
         title: String,
-        username: String
-      }
+      },
+      computed:{
+        // ...mapState(['username']),
+        username(){
+          return this.$store.state.username;
+        }
+      }, 
     }
 </script>
 <style lang="scss">

@@ -39,7 +39,7 @@ export default {
             type:String,
             default:'确定'
         },
-        cancelext:{
+        cancelText:{
             type:String,
             default:'取消'
         },
