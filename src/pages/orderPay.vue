@@ -1,5 +1,8 @@
 <template>
     <div class="order-pay">
+        <order-header title="订单支付" >
+            <template slot="tip"><span>请谨防钓鱼链接或诈骗电话，了解更多</span></template>
+        </order-header>
         <div class="container">
             <div class="order-info">
                 <div class="pay-info">
@@ -36,22 +39,42 @@
                 <div class="title">请选择以下支付方式</div>
                 <div class="plateform">支付平台</div>
                 <div class="pay">
-                    <span class="alipay"></span><span class="wechat"></span>
+                    <span class="alipay" :class="{'checked' : payType==0}" @click="payByAlipay"></span><span class="wechat" :class="{'checked' : payType==1}" @click="payByWechat"></span>
                 </div>
             </div>
         </div>
+        <scan-code v-if="showcode" :img="payImg" @close="closeWechat"></scan-code>
+        <modal title="付款确认" btnType=3 confirmText="已完成" cancelText="待付款" :showModal="showModal" @cancel="showModal=false" @submit="submitOrder">
+            <template v-slot:body>
+                <p>请确认是否已完成付款?</p>
+            </template>
+        </modal>
     </div>
 </template>
 <script>
+import QRCode from 'qrcode'
+import OrderHeader from './../components/OrderHeader'
+import ScanCode from './../components/ScanCode'
+import Modal from './../components/modal'
 export default {
     name:'order-pay',
+    components: {
+        OrderHeader,
+        ScanCode,
+        Modal
+    },
     data(){
         return {
             addressInfo:"",
             totalPrice:0,
             orderNo: this.$route.query.orderNo,
             product:[],
-            showDetail:false
+            showDetail:false,
+            payType: 0, //0:alipay  1: wechat
+            showcode: false,
+            payImg:'',
+            showModal: false,
+            interval:''
         }
     },
     mounted(){
@@ -65,7 +88,46 @@ export default {
                 this.addressInfo=adr.receiverName+' '+adr.receiverMobile+' '+adr.receiverProvince+' '+adr.receiverCity+' '+adr.receiverDistrict+' '+adr.receiverZip;
                 this.product=res.orderItemVoList;
             })
-        }
+        },
+        payByAlipay(){
+            this.payType=0;
+            window.open('/#/order/alipay?orderId='+this.orderNo, '_blank');
+        },
+        payByWechat(){
+            this.payType=1;
+            this.axios.post('/pay',{
+                orderId: this.orderNo,
+                orderName: 'de',
+                amount: "0.01",
+                payType: 2
+            }).then((res)=>{
+                QRCode.toDataURL (res.content).then(url=>{
+                   this.showcode=true;
+                   this.payImg=url;
+                   this.loopOrderState();
+                }).catch(()=>{
+                    this.$message.error('微信支付二维码生成失败，请稍后重试')
+                })
+            })
+        },
+        closeWechat(){
+            this.showcode=false;
+            this.showModal=true;
+            clearInterval(this.interval);
+        },
+        loopOrderState(){
+            this.interval = setInterval(()=>{
+                this.axios.get('/orders').then((res)=>{
+                    if(res.status == 20){
+                        clearInterval(this.interval)
+                        this.$router.push('/order/list');
+                    }
+                })
+            },1000) 
+        },
+        submitOrder(){
+            this.$router.push('/order/list');
+        },
     }
 }
 </script>
@@ -73,10 +135,10 @@ export default {
 @import './../assets/scss/mixin.scss';
 .order-pay{
     background-color: #e5e5e5;
-    padding-top: 32px;
     padding-bottom: 130px;
-    .container{
+    &>.container{
         display: block;
+        margin-top: 32px;
         .order-info{
             background-color: #fff;
             padding: 53px;
@@ -190,6 +252,9 @@ export default {
                 .wechat{
                     background: url('/imgs/pay/icon-wechat.png') no-repeat center;
                     background-size: 111px 33px;
+                }
+                .checked{
+                    border-color: #f60;
                 }
             }
         }

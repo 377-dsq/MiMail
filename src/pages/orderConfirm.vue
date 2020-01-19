@@ -1,5 +1,8 @@
 <template>
 <div class="confirm">
+    <order-header title="订单确认" >
+        <template slot="tip"><span>请确认收货地址</span></template>
+    </order-header>
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute; width: 0px; height: 0px; overflow: hidden;">
       <defs>
         <symbol id="icon-add" viewBox="0 0 31 32">
@@ -163,10 +166,12 @@
 </div>
 </template>
 <script>
+import OrderHeader from './../components/OrderHeader'
 import modal from './../components/modal'
 export default {
     name: 'order-confirm',
     components:{
+        OrderHeader,
         modal
     },
     data(){
@@ -297,12 +302,13 @@ export default {
 @import './../assets/scss/mixin.scss';
 .confirm{
     background: #e5e5e5;
-    padding: 32px 0 204px 0;
-    .container{
+    padding-bottom: 204px;
+    &>.container{
         display: block;
         background:#fff;
         padding: 0 63px;
         box-sizing: border-box;
+        margin-top: 32px;
         .address{
             .title{
                 height: 20px;

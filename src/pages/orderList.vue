@@ -1,0 +1,16 @@
+<template>
+    <div class="order-list">
+        <order-header title="订单列表" >
+            <template slot="tip"><span>请谨防钓鱼链接或诈骗电话，了解更多</span></template>
+        </order-header>
+    </div>
+</template>
+<script>
+import OrderHeader from './../components/OrderHeader'
+export default {
+    name: 'order-list',
+    components:{
+        OrderHeader
+    }
+}
+</script>
