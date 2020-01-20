@@ -13,7 +13,7 @@
           <a href="javascript:;" v-if="username">{{username}}</a>
           <a href="javascript:;" v-if="!username" @click="login">登录</a>
           <a href="javascript:;" v-if="username" @click="logout">退出</a>
-          <a href="javascript:;" v-if="username">我的订单</a>
+          <a href="javascript:;" v-if="username" @click="gotoOrderList">我的订单</a>
           <a href="javascript:;">消息通知</a>
           <a href="javascript:;" class="myCart" @click="gotoCart"><span class="icon-cart"></span>购物车({{cartCount}})</a>
         </div>
@@ -178,6 +178,9 @@
         },
         gotoCart(){
           this.$router.push('/cart');
+        },
+        gotoOrderList(){
+          this.$router.push('/order/list');
         }
       }    
     }
