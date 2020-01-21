@@ -10,7 +10,10 @@
                     <div class="info clearfix">
                         <div class="fl">
                             <div class="head">订单提交成功，请确认付款信息</div>
-                            <div class="time">请在<span>30分0秒</span>内完成支付, 超时后将取消订单</div>
+                            <div class="time">
+                                <span v-if="overTime">订单支付超时，订单已取消</span>
+                                <div v-else>请在<span>{{minute|time}}分{{second|time}}秒</span>内完成支付, 超时后将取消订单</div>
+                            </div>
                             <div class="receiver-info">收货信息：{{addressInfo}}</div>
                         </div>
                         <div class="fr">
@@ -74,7 +77,20 @@ export default {
             showcode: false,
             payImg:'',
             showModal: false,
-            interval:''
+            interval:'',
+            createTime: '2020-01-01 00:00:00', //订单创建时间
+            minute: '',   //订单支付时间倒计时
+            second: '',
+            overTime: false
+        }
+    },
+    filters:{
+        time(t){
+            if(t<10){
+                return '0'+t;
+            }else{
+                return t;
+            }
         }
     },
     mounted(){
@@ -87,7 +103,21 @@ export default {
                 let adr=res.shippingVo;
                 this.addressInfo=adr.receiverName+' '+adr.receiverMobile+' '+adr.receiverProvince+' '+adr.receiverCity+' '+adr.receiverDistrict+' '+adr.receiverZip;
                 this.product=res.orderItemVoList;
+                this.createTime= res.createTime; 
+                if(!this.overTime) this.countDown();
             })
+        },
+        countDown(){
+            let time =30 * 60 * 1000 - Date.now() + Date.parse(this.createTime) -14*60*60*1000;
+            this.minute = Math.floor(time/1000/60);
+            this.second = Math.floor(time/1000) - this.minute * 60; 
+            let int= setTimeout(this.countDown,1000);
+            if( this.minute <= 0 && this.minute <= 0){
+                clearTimeout(int);
+                this.axios.put(`/orders/${this.orderNo}`).then(()=>{
+                    this. overTime= true;
+                })
+            }
         },
         payByAlipay(){
             this.payType=0;
@@ -167,6 +197,7 @@ export default {
                         margin-bottom: 5px;
                         span{
                             color: #f60;
+                            font-weight: bold;
                         }
                     }
                     .total-price{

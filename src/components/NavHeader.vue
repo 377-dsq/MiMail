@@ -209,7 +209,7 @@
           background: #666;
           margin: 0;
           .icon-cart{
-            @include bgImg(16px,12px,'/imgs/icon-cart.png')
+            @include bgImg(16px,12px,'/imgs/icon-cart.png');
             margin-right: 4px;
             vertical-align:middle;
           }
